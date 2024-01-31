@@ -7,7 +7,8 @@ def books():
 
     min_year = request.args.get('min_year', default = None)
     max_year = request.args.get('max_year', default = None)
-    genres = request.args.getlist('genre')
+    author = request.args.get('author', default = None)
+    genre = request.args.getlist('genre')
 
     all_data = [ {
         'id': 1,
@@ -80,11 +81,14 @@ def books():
         'genre': 'Fantasy' 
     }]
 
-    if genres != []:
-        final_data = [book for book in all_data if book['genre'] in genres]
+    if genre:
+        final_data = [book for book in all_data if book['genre'] == genre]
     else:
         final_data = all_data
 
+    if author:
+        final_data = [book for book in final_data if book['author'] == author]
+    
     if max_year:
         max_year = int(max_year)
         final_data = [book for book in final_data if book['publication_year'] <= max_year]
