@@ -6,9 +6,17 @@ app = Flask(__name__)
 def books():
 
     min_year = request.args.get('min_year', default = None)
+    if min_year == "":
+        min_year = None
     max_year = request.args.get('max_year', default = None)
+    if max_year == "":
+        max_year = None
     author = request.args.get('author', default = None)
-    genre = request.args.getlist('genre')
+    if author == "":
+        author = None
+    genre = request.args.get('genre', default=None)
+    if genre == "":
+        genre = None
 
     all_data = [ {
         'id': 1,
@@ -81,19 +89,19 @@ def books():
         'genre': 'Fantasy' 
     }]
 
-    if genre:
+    if genre != None:
         final_data = [book for book in all_data if book['genre'] == genre]
     else:
         final_data = all_data
 
-    if author:
+    if author != None:
         final_data = [book for book in final_data if book['author'] == author]
     
-    if max_year:
+    if max_year != None:
         max_year = int(max_year)
         final_data = [book for book in final_data if book['publication_year'] <= max_year]
     
-    if min_year:
+    if min_year != None:
         min_year = int(min_year)
         final_data = [book for book in final_data if book['publication_year'] >= min_year]
 
